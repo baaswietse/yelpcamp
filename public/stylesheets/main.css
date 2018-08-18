@@ -10,3 +10,6 @@
 .text-left{
     padding-left: 15px;
 }
+#delete-form{
+    display: inline;
+}

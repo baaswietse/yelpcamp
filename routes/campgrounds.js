@@ -80,6 +80,16 @@ router.put("/campgrounds/:id", function(req,res){
     })
 })
 
+//DESTROY - deletes a campground
+router.delete("/campgrounds/:id", function(req, res){
+    Campground.findByIdAndRemove(req.params.id, function(err){
+        if(err){
+            console.log(err)
+        }else{
+            res.redirect("/campgrounds")
+        }
+    })
+})
 
 //middleware
 function isLoggedIn(req, res, next){
