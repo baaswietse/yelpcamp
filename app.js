@@ -36,7 +36,7 @@ passport.serializeUser(User.serializeUser())
 passport.deserializeUser(User.deserializeUser())
 
 
-app.use(function(req, res, next){       //custom middleware, that adds the user information to the data that is passed to the ejs templates (used for th eheader login/logout/register button's state)
+app.use(function(req, res, next){       //custom middleware, that adds the logged in users information to all our routes 
     res.locals.currentUser = req.user
     next()
 })

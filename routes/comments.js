@@ -3,6 +3,7 @@ var router = express.Router()
 var Campground = require("../models/campground")
 var Comment = require("../models/comment")
 
+//NEW comment
 router.get("/campgrounds/:id/comments/new", isLoggedIn, function(req,res){         //isLoggedIn is a middleware function, will run first before callback
     //find by id
     Campground.findById(req.params.id, function(err,campground){
@@ -39,6 +40,43 @@ router.post("/campgrounds/:id/comments", isLoggedIn, function(req, res){        
         }
     })
 })
+//EDIT comment
+router.get("/campgrounds/:id/comments/:comment_id/edit", checkCommentOwnership,function(req, res){
+    Comment.findById(req.params.comment_id,function(err, foundComment) {
+        if(err){
+            res.redirect("back")
+        }else{
+            res.render("comments/editComment.ejs", {campground_id: req.params.id, comment: foundComment})
+        }
+    })
+    
+})
+
+//UPDATE comment
+router.put("/campgrounds/:id/comments/:comment_id", checkCommentOwnership,function(req,res){
+        Comment.findByIdAndUpdate(req.params.comment_id, req.body.comment, function(err, updatedComment){
+            if(err){
+                res.redirect("back")
+            }else{
+                console.log("Comment updated:\n" + updatedComment)
+                res.redirect("/campgrounds/" + req.params.id)
+            }
+        })
+  
+})
+
+//DESTROY comment
+router.delete("/campgrounds/:id/comments/:comment_id", checkCommentOwnership,function(req,res){
+    Comment.findByIdAndRemove(req.params.comment_id, function(err){
+        if(err){
+            res.redirect("back")
+        }else{  
+            console.log("comment deleted by", req.user.username)
+            res.redirect("back")
+        }
+    })
+})
+
 
 //middleware
 function isLoggedIn(req, res, next){
@@ -49,5 +87,26 @@ function isLoggedIn(req, res, next){
     }
 }
 
+function checkCommentOwnership(req, res, next){
+    //is the user logged in?
+    if(req.isAuthenticated()){
+        Comment.findById(req.params.comment_id, function(err, foundComment){
+            if(err){
+                res.redirect("back")
+            }else{
+                //is the loggedin user the owner of the campground?
+                if(foundComment.author.id.equals(req.user._id)){     //we need the .equals() because foundCampground.author.id... is a object and req.user._id is a string
+                    next()                                              //run the callback function after this one
+                }else{
+                    console.log("User tried to edit/delete someone elses comment")
+                    res.redirect("back")
+                }
+            }
+        })
+    } else{
+        console.log("User not logged in to edit/delete comment")
+        res.redirect("back")
+    }
+}
 
 module.exports = router

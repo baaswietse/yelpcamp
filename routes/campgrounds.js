@@ -116,7 +116,7 @@ function checkCampgroundOwnership(req, res, next){
             }
         })
     } else{
-        console.log("User not logged in to edit/delete")
+        console.log("User not logged in to edit/delete campground")
         res.redirect("back")
     }
 }
