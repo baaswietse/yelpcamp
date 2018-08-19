@@ -5,6 +5,7 @@ var express         = require("express"),
     methodOverride  = require("method-override"),
     mongoose        = require('mongoose'),
     passport        = require('passport'),
+    flash           = require("connect-flash"),         //flash messages
     LocalStrategy   = require("passport-local"),
     User            = require("./models/user"),          //MODEL
     seedDB          = require("./seeds")                //MODEL
@@ -20,7 +21,7 @@ app.use(bodyParser.urlencoded({extended: true}))
 app.set("view engine", "ejs");
 app.use(express.static(__dirname + "/public"))      //links to the css folder
 app.use(methodOverride("_method"))                  //used to update
-
+app.use(flash())
 //seedDB()    //Seeds the DB everytime the server runs
 
 //PASSPORT CONFIGURATION
@@ -36,8 +37,10 @@ passport.serializeUser(User.serializeUser())
 passport.deserializeUser(User.deserializeUser())
 
 
-app.use(function(req, res, next){       //custom middleware, that adds the logged in users information to all our routes 
+app.use(function(req, res, next){       //custom middleware, that adds the logged in users information to all our routes, and the flash variable to prevent errors when there is no flash message
     res.locals.currentUser = req.user
+    res.locals.error = req.flash("error")
+    res.locals.succes = req.flash("succes")
     next()
 })
 
