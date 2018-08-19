@@ -10,4 +10,8 @@ Will be implemented in the middleware and header.ejs (see app.js to add it's par
 //
 This version makes a slideshow from the landingpage
 
-//in this version we added the price functionality and styled the login and signup pages
+//
+in this version we added the price functionality and styled the login and signup pages
+
+//
+We change from the local database to the remote database on mlab

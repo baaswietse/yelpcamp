@@ -15,7 +15,8 @@ var commentRoutes       = require("./routes/comments"),
     campgroundRoutes    = require("./routes/campgrounds"),
     indexRoutes         = require("./routes/index")
     
-mongoose.connect("mongodb://localhost:27017/yelp_camp_v3", { useNewUrlParser: true })    //Creates the database "yelp_camp" if non existent, otherwise open it
+//mongoose.connect("mongodb://localhost:27017/yelp_camp_v3", { useNewUrlParser: true })    //Creates the database "yelp_camp" if non existent, otherwise open it
+mongoose.connect("mongodb://baaswietse:W942018d@ds125372.mlab.com:25372/yelpcampwietse", { useNewUrlParser: true })
 
 app.use(bodyParser.urlencoded({extended: true}))
 app.set("view engine", "ejs");
