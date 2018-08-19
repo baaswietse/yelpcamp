@@ -40,7 +40,7 @@ passport.deserializeUser(User.deserializeUser())
 app.use(function(req, res, next){       //custom middleware, that adds the logged in users information to all our routes, and the flash variable to prevent errors when there is no flash message
     res.locals.currentUser = req.user
     res.locals.error = req.flash("error")
-    res.locals.succes = req.flash("succes")
+    res.locals.success = req.flash("success")
     next()
 })
 
