@@ -15,3 +15,6 @@ in this version we added the price functionality and styled the login and signup
 
 //
 We change from the local database to the remote database on mlab
+
+//
+Using a development database in combination with our deployment database
